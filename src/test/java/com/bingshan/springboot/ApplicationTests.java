@@ -28,6 +28,21 @@ class ApplicationTests {
      * @SpringBootTest  @MockBean  @SpyBean  @WebMvcTest  @AutoConfigureMockMvc
      *  Junit提供的:
      * @RunWith
+     *
+     * 13.4 Web应用单元测试
+     *  在面向对象的程序设计中, 模拟对象(mock object) 是以可控的方式模拟真实对象行为的假对象.
+     *  在编程过程中, 通常通过模拟一些输入数据,来验证程序是否达到预期效果.
+     *  模拟对象一般应用真实对象有以下特性的场景:
+     *      行为不确定
+     *      真实环境难搭建
+     *      行为难触发
+     *      速度很慢
+     *      需要界面操作
+     *      回调机制等
+     *  对Controller 层进行单元测试时, 便需要使用模拟对象, 采用 spring-test包中提供的 MockMvc.
+     *
+     *  MockMvc 实现了对Http请求的模拟,能够直接使用网络的形式, 转换到 Controller的调用,这样可以使得测试速度快
+     *  MockMvc使用, 创建一个简单的 TestController  hell()
      */
 
     @Test

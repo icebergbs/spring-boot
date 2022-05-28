@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * JUnit5单元测试实例
+ * 13.3 JUnit5单元测试实例
  *  使用@SpringBootTest 即可, 组合了 @ExtenWith(SpringExtension.class)
  *
  *  虽然单元测试代码与 JUnit4基本相同,但本质还是有区别的.
