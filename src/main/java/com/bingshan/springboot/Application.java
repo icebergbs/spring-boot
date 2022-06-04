@@ -3,7 +3,7 @@ package com.bingshan.springboot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
@@ -62,6 +62,12 @@ public class Application {
      *
      *
      *
+     */
+
+
+    /**
+     * 3.6 ApplicationListener
+     *     Spring事件传播机制是基于观察者模式 Observer
      */
 
 }
