@@ -1,8 +1,6 @@
 package com.bingshan.springboot.controller;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runner.Runner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +11,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.Assert.*;
 
 /**
  * MockMvc 的使用 , 基于 JUnit4  Springboot 2.x
@@ -23,7 +20,7 @@ import static org.junit.Assert.*;
  *      准备测试环境 - 执行MockMvc请求 - 添加验证断言 - 添加结果处理器 - 得到MvcResult进行自定义断言\进行下一步的异步请求 - 卸载测试环境
  *      Web应用的测试还有许多其他内容: 检测Web类型 , 检测测试配置, 排除测试配置及 事务回滚
  */
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TestControllerTest {
@@ -31,7 +28,7 @@ public class TestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
+    //@Test
     public void testMock() throws Exception {
         //mockMvc.perform执行一个请求
         mockMvc.perform(MockMvcRequestBuilders
