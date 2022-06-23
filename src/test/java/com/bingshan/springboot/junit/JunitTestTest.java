@@ -17,6 +17,16 @@ class JunitTestTest {
         Assertions.assertTrue(junitTest.testMethod(1, 2, 0));
     }
 
+    /**
+     *  参数化测试:
+     *      @ValueSource
+     *      @EnumSource
+     *      @MethodSource
+     *      @CsvSource
+     *      @CsvFileSource
+     *      @ArgumentsSource
+     *
+     */
     @ParameterizedTest
     @DisplayName("Condition Decision coverage sample test result true")
     @CsvSource({
