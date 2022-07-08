@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <APPNAME>
+  namespace: <NAMESPACE-NAME>
+  labels:
+    app: <APPNAME>
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <APPNAME>
+  template:
+    metadata:
+      labels:
+        app: <APPNAME>
+    spec:
+      containers:
+        - name: <APPNAME>
+          image: <IMAGE>
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: myregistrykey
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <APPNAME>-service
+  namespace: <NAMESPACE-NAME>
+  labels:
+    app: <APPNAME>-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      name: <APPNAME>
+  selector:
+    app: <APPNAME>
+  type: ClusterIP
