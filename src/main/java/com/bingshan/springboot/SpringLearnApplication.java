@@ -1,5 +1,6 @@
 package com.bingshan.springboot;
 
+import com.bingshan.springboot.properties.ArgsBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -46,6 +47,12 @@ public class SpringLearnApplication {
         ConfigurableApplicationContext context = app.run(args);
         WithoutAnnoConfiguration bean = context.getBean(WithoutAnnoConfiguration.class);
         System.out.println(bean.getName());
+
+        /**
+         * 5.2.2  SpringApplication.run(args)传入的参数
+         */
+        ArgsBean bean1 = context.getBean(ArgsBean.class);
+        bean1.printArgs();
     }
 
 
