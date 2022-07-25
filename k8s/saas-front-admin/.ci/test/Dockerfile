@@ -6,5 +6,5 @@ ENV LANG en_US.UTF-8
 FROM nginx:1.16-alpine
 
 ENV TZ=Asia/Shanghai
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY .ci/test/nginx.conf /etc/nginx/conf.d/default.conf
 COPY dist /usr/share/nginx/html
