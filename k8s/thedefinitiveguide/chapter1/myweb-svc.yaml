@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service         #表明是Kubernetes Service
+metadata:
+  name: myweb-service   #Service的全局唯一名称
+#  namespace: <NAMESPACE-NAME>
+  labels:
+    app: myweb-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8081          #Service提供服务的端口号
+      name: myweb
+      nodePort: 30001
+  selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务
+    app: myweb

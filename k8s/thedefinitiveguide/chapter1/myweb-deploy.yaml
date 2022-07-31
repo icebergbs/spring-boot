@@ -1,0 +1,44 @@
+apiVersion: apps/v1   #API版本
+kind: Deployment      #副本控制器Deployment
+metadata:
+  name: myweb         #对象名, 全局唯一
+  labels:             #标签
+    app: myweb
+spec:
+  replicas: 1         #预期的副本数量
+  selector:
+    matchLabels:
+      app: myweb
+  template:           #Pod模板
+    metadata:
+      labels:
+        app: myweb
+    spec:
+      containers:     #定义容器
+        - name: myweb
+          image: kubeguide/tomcat-app:v1
+          ports:
+            - containerPort: 8081    #容器应用监听的端口号
+          env:                       #注入容器内的环境变量
+            - name: MYSQL_SERVICE_HOST
+              value: 10.107.135.13
+#      imagePullSecrets:
+#        - name: myregistrykey
+
+---
+apiVersion: v1
+kind: Service         #表明是Kubernetes Service
+metadata:
+  name: myweb-service   #Service的全局唯一名称
+#  namespace: <NAMESPACE-NAME>
+  labels:
+    app: myweb-service
+spec:
+
+  ports:
+    - port: 8081          #Service提供服务的端口号
+      targetPort: 8081
+      name: myweb
+  selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务
+    app: myweb
+  type: ClusterIP

@@ -1,0 +1,43 @@
+apiVersion: apps/v1   #API版本
+kind: Deployment      #副本控制器Deployment
+metadata:
+  name: mysql         #对象名, 全局唯一
+  labels:             #标签
+    app: mysql
+spec:
+  replicas: 1         #预期的副本数量
+  selector:
+    matchLabels:
+      app: mysql
+  template:           #Pod模板
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:     #定义容器
+        - name: msyql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306    #容器应用监听的端口号
+          env:                       #注入容器内的环境变量
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+#      imagePullSecrets:
+#        - name: myregistrykey
+
+---
+apiVersion: v1
+kind: Service         #表明是Kubernetes Service
+metadata:
+  name: mysql-service   #Service的全局唯一名称
+#  namespace: <NAMESPACE-NAME>
+  labels:
+    app: mysql-service
+spec:
+  ports:
+    - port: 3306          #Service提供服务的端口号
+      targetPort: 3306
+      name: mysql
+  selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务
+    app: mysql
+  type: ClusterIP
