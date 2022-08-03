@@ -1,0 +1,314 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+  creationTimestamp: '2022-06-29T05:15:21Z'
+  generation: 2
+  labels:
+    app: nacos
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:app': {}
+        'f:spec':
+          'f:progressDeadlineSeconds': {}
+          'f:replicas': {}
+          'f:revisionHistoryLimit': {}
+          'f:selector': {}
+          'f:strategy':
+            'f:rollingUpdate':
+              .: {}
+              'f:maxSurge': {}
+              'f:maxUnavailable': {}
+            'f:type': {}
+          'f:template':
+            'f:metadata':
+              'f:annotations':
+                .: {}
+                'f:redeploy-timestamp': {}
+              'f:labels':
+                .: {}
+                'f:app': {}
+            'f:spec':
+              'f:affinity':
+                .: {}
+                'f:podAntiAffinity':
+                  .: {}
+                  'f:requiredDuringSchedulingIgnoredDuringExecution': {}
+              'f:containers':
+                'k:{"name":"k8snacos"}':
+                  .: {}
+                  'f:env':
+                    .: {}
+                    'k:{"name":"MODE"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"MYSQL_MASTER_SERVICE_DB_NAME"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"MYSQL_MASTER_SERVICE_HOST"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"MYSQL_MASTER_SERVICE_PASSWORD"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"MYSQL_MASTER_SERVICE_PORT"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"MYSQL_MASTER_SERVICE_USER"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"MYSQL_SLAVE_SERVICE_HOST"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"MYSQL_SLAVE_SERVICE_PORT"}':
+                      .: {}
+                      'f:name': {}
+                      'f:valueFrom':
+                        .: {}
+                        'f:configMapKeyRef':
+                          .: {}
+                          'f:key': {}
+                          'f:name': {}
+                    'k:{"name":"NACOS_SERVER_PORT"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"PREFER_HOST_MODE"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"SPRING_DATASOURCE_PLATFORM"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"TZ"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                  'f:image': {}
+                  'f:imagePullPolicy': {}
+                  'f:name': {}
+                  'f:ports':
+                    .: {}
+                    'k:{"containerPort":8848,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:name': {}
+                      'f:protocol': {}
+                  'f:resources':
+                    .: {}
+                    'f:limits':
+                      .: {}
+                      'f:cpu': {}
+                      'f:memory': {}
+                    'f:requests':
+                      .: {}
+                      'f:cpu': {}
+                      'f:memory': {}
+                  'f:terminationMessagePath': {}
+                  'f:terminationMessagePolicy': {}
+              'f:dnsPolicy': {}
+              'f:restartPolicy': {}
+              'f:schedulerName': {}
+              'f:securityContext': {}
+              'f:terminationGracePeriodSeconds': {}
+      manager: ACK-Console Apache-HttpClient
+      operation: Update
+      time: '2022-07-27T03:46:05Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:deployment.kubernetes.io/revision': {}
+        'f:status':
+          'f:availableReplicas': {}
+          'f:conditions':
+            .: {}
+            'k:{"type":"Available"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Progressing"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+          'f:observedGeneration': {}
+          'f:readyReplicas': {}
+          'f:replicas': {}
+          'f:updatedReplicas': {}
+      manager: kube-controller-manager
+      operation: Update
+      time: '2022-07-27T03:46:15Z'
+  name: nacos
+  namespace: kube-ops
+  resourceVersion: '950512694'
+  uid: 0166c2ea-3681-436b-bdd2-322905844aba
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nacos
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        redeploy-timestamp: '1658893565168'
+      labels:
+        app: nacos
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - nacos-service
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - env:
+            - name: MODE
+              value: standalone
+            - name: SPRING_DATASOURCE_PLATFORM
+              value: mysql
+            - name: TZ
+              value: Asia/Shanghai
+            - name: MYSQL_MASTER_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.service.host
+                  name: nacos-cm
+            - name: MYSQL_SLAVE_SERVICE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.service.host
+                  name: nacos-cm
+            - name: MYSQL_MASTER_SERVICE_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.db.name
+                  name: nacos-cm
+            - name: MYSQL_MASTER_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.port
+                  name: nacos-cm
+            - name: MYSQL_SLAVE_SERVICE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.port
+                  name: nacos-cm
+            - name: MYSQL_MASTER_SERVICE_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.user
+                  name: nacos-cm
+            - name: MYSQL_MASTER_SERVICE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: mysql.password
+                  name: nacos-cm
+            - name: NACOS_SERVER_PORT
+              value: '8848'
+            - name: PREFER_HOST_MODE
+              value: hostname
+          image: 'registry.cn-hangzhou.aliyuncs.com/ucharm/nacos-server:1.1.4'
+          imagePullPolicy: Always
+          name: k8snacos
+          ports:
+            - containerPort: 8848
+              name: client
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 2Gi
+            requests:
+              cpu: 200m
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2022-07-09T16:44:25Z'
+      lastUpdateTime: '2022-07-09T16:44:25Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2022-06-29T05:15:21Z'
+      lastUpdateTime: '2022-07-27T03:46:15Z'
+      message: ReplicaSet "nacos-77cf5979b9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
