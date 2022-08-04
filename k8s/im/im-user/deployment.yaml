@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: im-user
+  namespace: chenzhou
+  labels:
+    app: im-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: im-user
+  template:
+    metadata:
+      labels:
+        app: im-user
+    spec:
+      imagePullSecrets:
+        - name: myregistrykey
+      containers:
+        - name: im-user
+          image: registry.cn-hangzhou.aliyuncs.com/qoct/im-user:v2
+          ports:
+            - containerPort: 8304
+              name: http
+              protocol: TCP
+            - containerPort: 30884
+              name: dubbolistener
+              protocol: TCP
+            - containerPort: 21884
+              name: joblistener
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 30884
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 12
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 30884
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 12
+            successThreshold: 1
+            failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: im-user-service
+  namespace: chenzhou
+  labels:
+    app: im-user-service
+spec:
+  selector:
+    app: im-user
+  ports:
+    - protocol: TCP
+      name: dubbo-tcp
+      port: 30884
+      targetPort: 30884
+    - protocol: TCP
+      name: job-tcp
+      port: 21884
+      targetPort: 21884
+  type: ClusterIP
