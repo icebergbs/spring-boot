@@ -58,57 +58,34 @@ spec:
               value: mysql
             - name: TZ
               value: Asia/Shanghai
-            - name: MYSQL_MASTER_SERVICE_HOST
+            - name: MYSQL_SERVICE_HOST
               valueFrom:
                 configMapKeyRef:
                   key: mysql.service.host
                   name: nacos-cm
-            - name: MYSQL_MASTER_SERVICE_DB_NAME
+            - name: MYSQL_SERVICE_DB_NAME
               valueFrom:
                 configMapKeyRef:
                   key: mysql.db.name
                   name: nacos-cm
-            - name: MYSQL_MASTER_SERVICE_PORT
+            - name: MYSQL_SERVICE_PORT
               valueFrom:
                 configMapKeyRef:
                   key: mysql.port
                   name: nacos-cm
-            - name: MYSQL_MASTER_SERVICE_USER
+            - name: MYSQL_SERVICE_USER
               valueFrom:
                 configMapKeyRef:
                   key: mysql.user
                   name: nacos-cm
-            - name: MYSQL_MASTER_SERVICE_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  key: mysql.password
-                  name: nacos-cm
-            - name: MYSQL_SLAVE_SERVICE_HOST
-              valueFrom:
-                configMapKeyRef:
-                  key: mysql.service.host
-                  name: nacos-cm
-            - name: MYSQL_SLAVE_SERVICE_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: mysql.port
-                  name: nacos-cm
-            - name: MYSQL_SLAVE_SERVICE_DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  key: mysql.db.name
-                  name: nacos-cm
-            - name: MYSQL_SLAVE_SERVICE_USER
-              valueFrom:
-                configMapKeyRef:
-                  key: mysql.user
-                  name: nacos-cm
-            - name: MYSQL_SLAVE_SERVICE_PASSWORD
+            - name: MYSQL_SERVICE_PASSWORD
               valueFrom:
                 configMapKeyRef:
                   key: mysql.password
                   name: nacos-cm
             - name: NACOS_SERVER_PORT
+              value: "8848"
+            - name: NACOS_APPLICATION_PORT
               value: "8848"
             - name: PREFER_HOST_MODE
               value: "hostname"
