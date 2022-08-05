@@ -1,0 +1,162 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: '2020-06-09T05:12:07Z'
+  generation: 23
+  labels:
+    app: elasticsearch
+  name: es-cluster
+  namespace: kube-ops
+  resourceVersion: '1154254694'
+  uid: eb255f2c-7bd0-48f0-986e-9760eb68f5c2
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: elasticsearch
+  serviceName: elasticsearch-headless
+  template:
+    metadata:
+      annotations:
+        redeploy-timestamp: '1654753830112'
+      labels:
+        app: elasticsearch
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - elasticsearch
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - env:
+            - name: REQUESTS_MEMORY
+              valueFrom:
+                resourceFieldRef:
+                  divisor: 1Mi
+                  resource: requests.memory
+            - name: node.name
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: cluster.name
+              value: es-cluster
+            - name: http.cors.enabled
+              value: 'true'
+            - name: http.cors.allow-origin
+              value: '*'
+            - name: TZ
+              value: Asia/Shanghai
+            - name: ES_JAVA_OPTS
+              value: '-Xms$(REQUESTS_MEMORY)m -Xmx$(REQUESTS_MEMORY)m'
+            - name: cluster.initial_master_nodes
+              value: 'es-cluster-0,es-cluster-1,es-cluster-2'
+            - name: discovery.seed_hosts
+              value: >-
+                es-cluster-0.elasticsearch-headless,es-cluster-1.elasticsearch-headless,es-cluster-2.elasticsearch-headless
+          image: 'registry.cn-hangzhou.aliyuncs.com/mixlink/elasticsearch:7.16.2'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 12
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9200
+            timeoutSeconds: 5
+          name: elasticsearch
+          ports:
+            - containerPort: 9200
+              name: es-http
+              protocol: TCP
+            - containerPort: 9300
+              name: cluster-port
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 12
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9200
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: '1'
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: data-elasticsearch
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: ml-repository
+        - name: mixlink-repository
+      initContainers:
+        - command:
+            - sysctl
+            - '-w'
+            - vm.max_map_count=262144
+          image: 'busybox:latest'
+          imagePullPolicy: IfNotPresent
+          name: vm-max-map
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        - command:
+            - sh
+            - '-c'
+            - ulimit -n 65535
+          image: 'busybox:latest'
+          imagePullPolicy: IfNotPresent
+          name: fd-ulimit
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data-elasticsearch
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 80Gi
+        storageClassName: alicloud-nas
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+status:
+  collisionCount: 0
+  currentReplicas: 3
+  currentRevision: es-cluster-5db9d46967
+  observedGeneration: 23
+  readyReplicas: 3
+  replicas: 3
+  updateRevision: es-cluster-5db9d46967
+  updatedReplicas: 3
