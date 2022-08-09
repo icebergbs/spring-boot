@@ -1,0 +1,147 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: es-config
+  namespace: chenzhou
+data:
+  elasticsearch.yml: |
+    node.name: master
+    cluster.initial_master_nodes: ["master"]
+    node.master: true
+    network.host: 0.0.0.0
+    path.data: /data
+    http.cors.enabled: true
+    http.cors.allow-origin: "*"
+
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: chenzhou
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  serviceName: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - env:
+          - name: ES_JAVA_OPTS
+            value: -Xms2048m -Xmx2048m
+          - name: node.data
+            value: "true"
+          - name: node.master
+            value: "true"
+          - name: path.data
+            value: /usr/share/elasticsearch/data
+          # 自定义集群名
+          - name: cluster.name
+            value: es-cluster
+          # 定义节点名，使用metadata.name名称
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+            # 初始化集群时，ES从中选出master节点
+          - name: cluster.initial_master_nodes
+            # 对应metadata.name名称加编号，编号从0开始
+            value: "elasticsearch-0"
+          - name: discovery.zen.minimum_master_nodes
+            value: "1"
+          # 发现节点的地址，discovery.seed_hosts的值应包括所有master候选节点
+          # 如果discovery.seed_hosts的值是一个域名，且该域名解析到多个IP地址，那么es将处理其所有解析的IP地址。
+          - name: discovery.seed_hosts
+            value: "elasticsearch"
+          name: elasticsearch
+          image: 'registry.cn-hangzhou.aliyuncs.com/mixlink/elasticsearch:7.16.2'
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    sysctl -w vm.max_map_count=262144
+                    ulimit -l unlimited
+                    ulimit -n 65536
+                    chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data
+          ports:
+            - containerPort: 9200
+              name: 9200tcp2
+              protocol: TCP
+            - containerPort: 9300
+              name: 9300tcp2
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4Gi
+            requests:
+              cpu: "1"
+              memory: 2Gi
+          # 设置挂载目录
+          volumeMounts:
+            - name: es-data
+              mountPath: /usr/share/elasticsearch/data
+            - mountPath: /usr/share/elasticsearch/plugins
+              name: es-plugins
+            - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+              name: es-conf
+              subPath: elasticsearch.yml
+      imagePullSecrets:
+        - name: myregistrykey
+      volumes:
+        - hostPath:
+            path: /home/software/elasticsearch/k8s-es/plugins
+            type: ''
+          name: es-plugins
+        - configMap:
+            defaultMode: 420
+            name: es-config
+          name: es-conf
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        # 对应容器中volumeMounts.name
+        name: es-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: alicloud-disk-ssd
+
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-service
+  labels:
+    app: elasticsearch
+spec:
+  clusterIP: None
+  ports:
+    - name: elasticsearch-in
+      port: 9300
+      protocol: TCP
+      targetPort: 9300
+    - name: elasticsearch-out
+      port: 9200
+      protocol: TCP
+      targetPort: 9200
+  selector:
+    app: elasticsearch
+  type: ClusterIP

@@ -1,0 +1,242 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+  creationTimestamp: '2022-06-28T09:10:49Z'
+  generation: 1
+  labels:
+    app: kibana
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: { }
+            'f:app': { }
+        'f:spec':
+          'f:progressDeadlineSeconds': { }
+          'f:replicas': { }
+          'f:revisionHistoryLimit': { }
+          'f:selector': { }
+          'f:strategy':
+            'f:rollingUpdate':
+              .: { }
+              'f:maxSurge': { }
+              'f:maxUnavailable': { }
+            'f:type': { }
+          'f:template':
+            'f:metadata':
+              'f:labels':
+                .: { }
+                'f:app': { }
+            'f:spec':
+              'f:containers':
+                'k:{"name":"kibana"}':
+                  .: { }
+                  'f:env':
+                    .: { }
+                    'k:{"name":"ELASTICSEARCH_HOSTS"}':
+                      .: { }
+                      'f:name': { }
+                      'f:value': { }
+                    'k:{"name":"I18N_LOCALE"}':
+                      .: { }
+                      'f:name': { }
+                      'f:value': { }
+                    'k:{"name":"TZ"}':
+                      .: { }
+                      'f:name': { }
+                      'f:value': { }
+                  'f:image': { }
+                  'f:imagePullPolicy': { }
+                  'f:livenessProbe':
+                    .: { }
+                    'f:failureThreshold': { }
+                    'f:httpGet':
+                      .: { }
+                      'f:path': { }
+                      'f:port': { }
+                      'f:scheme': { }
+                    'f:initialDelaySeconds': { }
+                    'f:periodSeconds': { }
+                    'f:successThreshold': { }
+                    'f:timeoutSeconds': { }
+                  'f:name': { }
+                  'f:ports':
+                    .: { }
+                    'k:{"containerPort":5601,"protocol":"TCP"}':
+                      .: { }
+                      'f:containerPort': { }
+                      'f:name': { }
+                      'f:protocol': { }
+                  'f:readinessProbe':
+                    .: { }
+                    'f:failureThreshold': { }
+                    'f:httpGet':
+                      .: { }
+                      'f:path': { }
+                      'f:port': { }
+                      'f:scheme': { }
+                    'f:initialDelaySeconds': { }
+                    'f:periodSeconds': { }
+                    'f:successThreshold': { }
+                    'f:timeoutSeconds': { }
+                  'f:resources':
+                    .: { }
+                    'f:limits':
+                      .: { }
+                      'f:cpu': { }
+                      'f:memory': { }
+                    'f:requests':
+                      .: { }
+                      'f:cpu': { }
+                      'f:memory': { }
+                  'f:securityContext':
+                    .: { }
+                    'f:runAsGroup': { }
+                    'f:runAsUser': { }
+                  'f:terminationMessagePath': { }
+                  'f:terminationMessagePolicy': { }
+              'f:dnsPolicy': { }
+              'f:imagePullSecrets':
+                .: { }
+                'k:{"name":"mix-repo"}':
+                  .: { }
+                  'f:name': { }
+              'f:restartPolicy': { }
+              'f:schedulerName': { }
+              'f:securityContext': { }
+              'f:terminationGracePeriodSeconds': { }
+      manager: ACK-Console Apache-HttpClient
+      operation: Update
+      time: '2022-06-28T09:10:49Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: { }
+            'f:deployment.kubernetes.io/revision': { }
+        'f:status':
+          'f:availableReplicas': { }
+          'f:conditions':
+            .: { }
+            'k:{"type":"Available"}':
+              .: { }
+              'f:lastTransitionTime': { }
+              'f:lastUpdateTime': { }
+              'f:message': { }
+              'f:reason': { }
+              'f:status': { }
+              'f:type': { }
+            'k:{"type":"Progressing"}':
+              .: { }
+              'f:lastTransitionTime': { }
+              'f:lastUpdateTime': { }
+              'f:message': { }
+              'f:reason': { }
+              'f:status': { }
+              'f:type': { }
+          'f:observedGeneration': { }
+          'f:readyReplicas': { }
+          'f:replicas': { }
+          'f:updatedReplicas': { }
+      manager: kube-controller-manager
+      operation: Update
+      time: '2022-07-21T12:52:24Z'
+  name: kibana
+  namespace: kube-ops
+  resourceVersion: '936636503'
+  uid: d7fb5afe-6356-44f7-920c-11b6a17652e3
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kibana
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: ELASTICSEARCH_HOSTS
+              value: 'http://es-service.kube-ops.svc.cluster.local:9200'
+            - name: I18N_LOCALE
+              value: zh-CN
+          image: 'registry.cn-hangzhou.aliyuncs.com/mixlink/kibana:7.16.2'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /app/kibana
+              port: 5601
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: kibana
+          ports:
+            - containerPort: 5601
+              name: kibana
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 12
+            httpGet:
+              path: /app/kibana
+              port: 5601
+              scheme: HTTP
+            initialDelaySeconds: 240
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          securityContext:
+            runAsGroup: 1000
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: mix-repo
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: { }
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2022-06-28T09:45:18Z'
+      lastUpdateTime: '2022-06-28T09:45:18Z'
+      message: ReplicaSet "kibana-56bc5f888c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+    - lastTransitionTime: '2022-07-21T12:52:24Z'
+      lastUpdateTime: '2022-07-21T12:52:24Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
