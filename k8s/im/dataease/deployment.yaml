@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dataease
+  namespace: chenzhou
+  labels:
+    app: dataease
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataease
+  template:
+    metadata:
+      labels:
+        app: dataease
+    spec:
+      containers:
+        - name: dataease
+          image: 'registry.cn-hangzhou.aliyuncs.com/qoct/dataease:v2'
+          ports:
+            - containerPort: 80
+          securityContext:
+            privileged: true
+      imagePullSecrets:
+        - name: myregistrykey
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataease-service
+  namespace: chenzhou
+  labels:
+    app: dataease-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      name: dataease
+  selector:
+    app: dataease
+  type: ClusterIP

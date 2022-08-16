@@ -1,0 +1,82 @@
+apiVersion: apps/v1   #API版本
+kind: StatefulSet
+metadata:
+  name: mysql         #对象名, 全局唯一
+  namespace: chenzhou
+  labels:             #标签
+    app: mysql
+spec:
+  replicas: 1         #预期的副本数量
+  selector:
+    matchLabels:
+      app: mysql
+  template:           #Pod模板
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:     #定义容器
+        - name: msyql
+          image: mysql:5.7
+          env:                       #注入容器内的环境变量
+            - name: MYSQL_ROOT_PASSWORD
+              value: "Passwd@1234"
+          ports:
+            - containerPort: 3306
+              name: mysql
+              protocol: TCP
+          # 设置挂载目录
+          volumeMounts:
+            - mountPath: /etc/mysql/conf.d/my.cnf
+              name: config-map
+              subPath: my.cnf
+            - mountPath: /var/lib/mysql
+              name: volume-data-mysql-0
+              subPath: mysql
+      imagePullSecrets:
+        - name: myregistrykey
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: mysql
+          name: config-map
+        - name: volume-data-mysql-0
+          persistentVolumeClaim:
+            claimName: data-mysql-0
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: alicloud-disk-ssd
+        volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: Service         #表明是Kubernetes Service
+metadata:
+  name: mysql-service   #Service的全局唯一名称
+  namespace: chenzhou
+  labels:
+    app: mysql
+spec:
+  clusterIP: None
+  ports:
+    - name: tcp3306
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: tcp33060
+      port: 33060
+      protocol: TCP
+      targetPort: 33060
+  selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务
+    app: mysql
+  type: ClusterIP
+

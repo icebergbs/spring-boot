@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qocz-front
+  namespace: chenzhou
+  labels:
+    app: qocz-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qocz-front
+  template:
+    metadata:
+      labels:
+        app: qocz-front
+    spec:
+      containers:
+        - name: qocz-front
+          image: registry.cn-hangzhou.aliyuncs.com/qoct/qocz-front:v2
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: myregistrykey
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qocz-front-service
+  namespace: chenzhou
+  labels:
+    app: qocz-front-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      name: qocz-front
+  selector:
+    app: qocz-front
+  type: ClusterIP
+
+
+
+
+
+
+
