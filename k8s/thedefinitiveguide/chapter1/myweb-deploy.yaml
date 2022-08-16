@@ -21,7 +21,7 @@ spec:
             - containerPort: 8081    #容器应用监听的端口号
           env:                       #注入容器内的环境变量
             - name: MYSQL_SERVICE_HOST
-              value: 10.107.135.13
+              value: 10.106.241.206
 #      imagePullSecrets:
 #        - name: myregistrykey
 
@@ -29,16 +29,14 @@ spec:
 apiVersion: v1
 kind: Service         #表明是Kubernetes Service
 metadata:
-  name: myweb-service   #Service的全局唯一名称
+  name: myweb   #Service的全局唯一名称
 #  namespace: <NAMESPACE-NAME>
-  labels:
-    app: myweb-service
+#  labels:
+#    app: myweb-service
 spec:
-
   ports:
     - port: 8081          #Service提供服务的端口号
-      targetPort: 8081
-      name: myweb
+      nodePort: 30001
   selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务
     app: myweb
-  type: ClusterIP
+  type: NodePort

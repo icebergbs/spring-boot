@@ -21,7 +21,7 @@ spec:
             - containerPort: 3306    #容器应用监听的端口号
           env:                       #注入容器内的环境变量
             - name: MYSQL_ROOT_PASSWORD
-              value: "root"
+              value: "123456"
 #      imagePullSecrets:
 #        - name: myregistrykey
 
