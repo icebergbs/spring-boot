@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: cm-test-pod
+spec:
+  containers: #定义容器
+    - name: cm-test
+      image: busybox
+      command: [ "/bin/sh", "-c", "env | grep APP" ]
+      env:
+      - name: APPLOGLEVEL     #定义环境变量名称
+        valueFrom:            #key "apploglevel" 对应的值
+          configMapKeyRef:
+            name: cm-appvars   #环境变量的值取自cm-appvars:
+            key: apploglevel   # key为 apploglevel
+      - name: APPDATADIR
+        valueFrom:
+          configMapKeyRef:
+            name: cm-appvars
+            key: appdatadir
+        - containerPort: 80
+  restartPolicy: Never

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-appconfigfiles
+data:
+   key-serverxml: |
+     <?xml varsion='1.0' encoding='urf-8'>
+     <Server port="8005" shutdown="SHUTODOWN">
+     ....
+   key-loggingproperties: "handlers
+   ........"
