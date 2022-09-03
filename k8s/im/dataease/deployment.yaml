@@ -19,9 +19,16 @@ spec:
         - name: dataease
           image: 'registry.cn-hangzhou.aliyuncs.com/qoct/dataease:v2'
           ports:
-            - containerPort: 80
+            - containerPort: 8081
           securityContext:
             privileged: true
+          volumeMounts:
+            - name: volume-dataease-data
+              mountPath: /opt/dataease/data
+      volumes:
+        - name: volume-dataease-data
+          persistentVolumeClaim:
+            claimName: dataease-data
       imagePullSecrets:
         - name: myregistrykey
 
@@ -36,7 +43,7 @@ metadata:
 spec:
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 8081
       name: dataease
   selector:
     app: dataease
