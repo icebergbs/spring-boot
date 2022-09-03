@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: volume-pod
+  labels:
+    app: redis-php
+spec:
+  containers: #定义容器
+    - name: tomcat
+      image: tomcat
+      ports:
+        - containerPort: 8080
+      volumeMounts:
+      - name: app-logs
+        mountPath: /usr/local/tomcat/logs     #挂载到tomcat容器目录下
+    - name: busybox
+      image: busybox
+      command: [ "sh", "-c", "tail -f /logs/catalina*.log"]
+      volumeMounts:
+      - name: app-logs
+        mountPath: /logs      #同时挂载到logreader容器目录下
+  volumes:
+    - name: app-logs      #Volume名称
+      emptyDir: {}        #类型

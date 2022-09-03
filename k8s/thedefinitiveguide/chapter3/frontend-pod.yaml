@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  containers: #定义容器
+    - name: frontend
+      image: kubeguide/guestbook-php-frontend
+      env:
+      - name: GET_HOSTS_FROM
+        value: env
+      ports:
+        - containerPort: 80

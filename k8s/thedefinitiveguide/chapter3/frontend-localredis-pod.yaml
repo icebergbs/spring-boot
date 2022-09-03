@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: redis-php
+  labels:
+    app: redis-php
+spec:
+  containers: #定义容器
+    - name: frontend
+      image: kubeguide/guestbook-php-frontend
+      ports:
+        - containerPort: 80
+    - name: redis
+      image: kubeguide/redis-master
+      ports:
+        - containerPort: 6379
