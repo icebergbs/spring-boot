@@ -1,4 +1,4 @@
-package com.bingshan.msg;
+package com.bingshan.springboot.msg;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

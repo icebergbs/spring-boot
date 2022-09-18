@@ -1,10 +1,11 @@
-package com.bingshan.msg;
+package com.bingshan.springboot.msg;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ public class MsgAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(MsgService.class)
-    @ConditionalOnProperty(prefix = "msg", value = "enabled", havingValue = "true")
+    @ConditionalOnProperty(prefix = "msg", value = "enabled", matchIfMissing = true)
     public MsgService msgService() {
         MsgService msgService = new MsgService(msgProperties.getUrl(), msgProperties.getAccessKeyId(),
                 msgProperties.getAccessKeySecret());
