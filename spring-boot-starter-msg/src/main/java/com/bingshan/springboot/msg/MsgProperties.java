@@ -2,7 +2,10 @@ package com.bingshan.springboot.msg;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "msg")
+/**
+ * 自动配置的属性配置类
+ */
+@ConfigurationProperties(prefix = "msg")  //对应属性的装配
 public class MsgProperties {
 
     /**

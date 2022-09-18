@@ -19,9 +19,9 @@
         <java.version>1.8</java.version>
     </properties>
 
-<!--    <modules>-->
-<!--        <module>spring-boot-starter-msg</module>-->
-<!--    </modules>-->
+    <modules>
+        <module>spring-boot-starter-msg</module>
+    </modules>
 
     <dependencies>
         <dependency>

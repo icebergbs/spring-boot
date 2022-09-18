@@ -1,5 +1,8 @@
 package com.bingshan.springboot.msg;
 
+/**
+ * 工具类， 生成根据具体场景实现
+ */
 public class HttpClientUtils {
 
     public static int sendMsg(String url, String accessKeyId, String accessKeySecret, String msg) {

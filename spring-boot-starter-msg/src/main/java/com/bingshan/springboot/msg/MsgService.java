@@ -1,5 +1,8 @@
 package com.bingshan.springboot.msg;
 
+/**
+ * 短信发送功能实现类
+ */
 public class MsgService {
     /**
      * 访问发送短信的Url地址
