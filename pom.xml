@@ -18,10 +18,11 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <modules>
 <!--        <module>spring-boot-starter-msg</module>-->
+        <module>sql-generate-util</module>
     </modules>
 
     <dependencies>
