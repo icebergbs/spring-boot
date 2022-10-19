@@ -1,0 +1,269 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: '2022-06-28T11:11:42Z'
+  generation: 7
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:podManagementPolicy': {}
+          'f:replicas': {}
+          'f:revisionHistoryLimit': {}
+          'f:selector': {}
+          'f:serviceName': {}
+          'f:template':
+            'f:metadata':
+              'f:annotations':
+                .: {}
+                'f:redeploy-timestamp': {}
+              'f:labels':
+                .: {}
+                'f:app': {}
+            'f:spec':
+              'f:containers':
+                'k:{"name":"zeebe"}':
+                  .: {}
+                  'f:env':
+                    .: {}
+                    'k:{"name":"JAVA_TOOL_OPTIONS"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"ZEEBE_CLUSTER_SIZE"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"ZEEBE_LOG_LEVEL"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"ZEEBE_PARTITIONS_COUNT"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                    'k:{"name":"ZEEBE_REPLICATION_FACTOR"}':
+                      .: {}
+                      'f:name': {}
+                      'f:value': {}
+                  'f:image': {}
+                  'f:imagePullPolicy': {}
+                  'f:name': {}
+                  'f:ports':
+                    .: {}
+                    'k:{"containerPort":26500,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:name': {}
+                      'f:protocol': {}
+                    'k:{"containerPort":26501,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:name': {}
+                      'f:protocol': {}
+                    'k:{"containerPort":26502,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:name': {}
+                      'f:protocol': {}
+                  'f:readinessProbe':
+                    .: {}
+                    'f:failureThreshold': {}
+                    'f:httpGet':
+                      .: {}
+                      'f:path': {}
+                      'f:port': {}
+                      'f:scheme': {}
+                    'f:initialDelaySeconds': {}
+                    'f:periodSeconds': {}
+                    'f:successThreshold': {}
+                    'f:timeoutSeconds': {}
+                  'f:resources':
+                    .: {}
+                    'f:limits':
+                      .: {}
+                      'f:cpu': {}
+                      'f:memory': {}
+                    'f:requests':
+                      .: {}
+                      'f:cpu': {}
+                      'f:memory': {}
+                  'f:terminationMessagePath': {}
+                  'f:terminationMessagePolicy': {}
+                  'f:volumeMounts':
+                    .: {}
+                    'k:{"mountPath":"/usr/local/bin/startup.sh"}':
+                      .: {}
+                      'f:mountPath': {}
+                      'f:name': {}
+                      'f:subPath': {}
+                    'k:{"mountPath":"/usr/local/zeebe/config/application.yaml"}':
+                      .: {}
+                      'f:mountPath': {}
+                      'f:name': {}
+                      'f:subPath': {}
+                    'k:{"mountPath":"/usr/local/zeebe/data"}':
+                      .: {}
+                      'f:mountPath': {}
+                      'f:name': {}
+                      'f:subPath': {}
+              'f:dnsPolicy': {}
+              'f:imagePullSecrets':
+                .: {}
+                'k:{"name":"mix-repo"}':
+                  .: {}
+                  'f:name': {}
+                'k:{"name":"myregistrykey"}':
+                  .: {}
+                  'f:name': {}
+              'f:restartPolicy': {}
+              'f:schedulerName': {}
+              'f:securityContext': {}
+              'f:terminationGracePeriodSeconds': {}
+              'f:volumes':
+                .: {}
+                'k:{"name":"config"}':
+                  .: {}
+                  'f:configMap':
+                    .: {}
+                    'f:defaultMode': {}
+                    'f:name': {}
+                  'f:name': {}
+                'k:{"name":"data"}':
+                  .: {}
+                  'f:emptyDir': {}
+                  'f:name': {}
+          'f:updateStrategy':
+            'f:type': {}
+          'f:volumeClaimTemplates': {}
+      manager: ACK-Console Apache-HttpClient
+      operation: Update
+      time: '2022-10-08T02:42:22Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:collisionCount': {}
+          'f:currentReplicas': {}
+          'f:currentRevision': {}
+          'f:observedGeneration': {}
+          'f:replicas': {}
+          'f:updateRevision': {}
+          'f:updatedReplicas': {}
+      manager: kube-controller-manager
+      operation: Update
+      time: '2022-10-08T02:49:25Z'
+  name: zeebe
+  namespace: mixlink-test
+  resourceVersion: '1149985770'
+  uid: a2029efa-e761-4214-a6ed-b6a4976f351f
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: zeebe
+  serviceName: zeebe
+  template:
+    metadata:
+      annotations:
+        redeploy-timestamp: '1665197115595'
+      labels:
+        app: zeebe
+    spec:
+      containers:
+        - env:
+            - name: ZEEBE_LOG_LEVEL
+              value: debug
+            - name: ZEEBE_PARTITIONS_COUNT
+              value: '1'
+            - name: ZEEBE_CLUSTER_SIZE
+              value: '1'
+            - name: ZEEBE_REPLICATION_FACTOR
+              value: '1'
+            - name: JAVA_TOOL_OPTIONS
+              value: '-Xms1024m -Xmx1024m'
+          image: 'registry.cn-hangzhou.aliyuncs.com/mixlink/zeebe:1.1.0'
+          imagePullPolicy: Always
+          name: zeebe
+          ports:
+            - containerPort: 26500
+              name: gateway
+              protocol: TCP
+            - containerPort: 26501
+              name: command
+              protocol: TCP
+            - containerPort: 26502
+              name: internal
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 9600
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2Gi
+            requests:
+              cpu: 300m
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /usr/local/zeebe/config/application.yaml
+              name: config
+              subPath: application.yaml
+            - mountPath: /usr/local/bin/startup.sh
+              name: config
+              subPath: startup.sh
+            - mountPath: /usr/local/zeebe/data
+              name: data
+              subPath: zeebe
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: myregistrykey
+        - name: mix-repo
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - configMap:
+            defaultMode: 484
+            name: zeebe-config
+          name: config
+        - emptyDir: {}
+          name: data
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: alicloud-disk-ssd
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+status:
+  collisionCount: 0
+  currentReplicas: 1
+  currentRevision: zeebe-594dbd4c4b
+  observedGeneration: 7
+  replicas: 1
+  updateRevision: zeebe-594dbd4c4b
+  updatedReplicas: 1

@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: '2022-06-02T09:05:11Z'
+  generation: 12
+  name: zeebe
+  namespace: mixlink-test
+  resourceVersion: '1154239561'
+  uid: 09b59832-dff9-4622-980d-11cd1bb65d0b
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: zeebe
+  serviceName: zeebe
+  template:
+    metadata:
+      annotations:
+        redeploy-timestamp: '1654755879514'
+      labels:
+        app: zeebe
+    spec:
+      containers:
+        - env:
+            - name: ZEEBE_LOG_LEVEL
+              value: debug
+            - name: ZEEBE_PARTITIONS_COUNT
+              value: '1'
+            - name: ZEEBE_CLUSTER_SIZE
+              value: '1'
+            - name: ZEEBE_REPLICATION_FACTOR
+              value: '1'
+            - name: JAVA_TOOL_OPTIONS
+              value: '-Xms1024m -Xmx1024m'
+          image: 'registry.cn-hangzhou.aliyuncs.com/mixlink/zeebe:1.1.0'
+          imagePullPolicy: IfNotPresent
+          name: zeebe
+          ports:
+            - containerPort: 26500
+              name: gateway
+              protocol: TCP
+            - containerPort: 26501
+              name: command
+              protocol: TCP
+            - containerPort: 26502
+              name: internal
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 9600
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: '1'
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /usr/local/zeebe/config/application.yaml
+              name: config
+              subPath: application.yaml
+            - mountPath: /usr/local/bin/startup.sh
+              name: config
+              subPath: startup.sh
+            - mountPath: /usr/local/zeebe/data
+              name: data
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: mixlink-repo
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - configMap:
+            defaultMode: 484
+            name: zeebe-config
+          name: config
+        - emptyDir: {}
+          name: data
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: zeebe-regional
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+status:
+  collisionCount: 0
+  currentReplicas: 1
+  currentRevision: zeebe-7bd4586d46
+  observedGeneration: 12
+  readyReplicas: 1
+  replicas: 1
+  updateRevision: zeebe-7bd4586d46
+  updatedReplicas: 1
