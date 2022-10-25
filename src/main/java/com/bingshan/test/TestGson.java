@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * 大写开头转换   @JsonProperty   @JSONField
  * @author bingshan
  * @date 2022/4/18 20:39
  */
