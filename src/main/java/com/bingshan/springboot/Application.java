@@ -3,6 +3,17 @@ package com.bingshan.springboot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @SpringBootApplication 注解在指定Bootstrap类的同时， 还会自动扫描与当前类同级以及子包下大的@Component、@Sercice、
+ * @Repository、@Controller、@Entity等注解， 并把这些注解对应的类转换为Bean对象全部加载到Spring容器中管理起来。
+ *
+ *      @Configuration注解比较常见，提供了JavaConfig配置类实现
+ *      @ComponentScan则扫描@Component等注解，把相关的Bean定义批量加载到IoC容器中
+ *      @EnableAutoCOnfiguration注解最终会使用JDK所提供SPI(Service Provider Interface， 服务提供者接口） 机制来实现类的动态加载。
+ *
+ *  当日志中出现以下信息时， 代表Spring Boot已经启动成功。
+ *  xxx.xx.xxApplication : Started xxApplication in 10.9.76 seconds (JVM running for 11.978)
+ */
 //@SpringBootApplication
 public class Application {
 
