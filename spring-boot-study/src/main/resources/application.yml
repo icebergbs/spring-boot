@@ -1,0 +1,38 @@
+
+study:
+  enabled: true
+
+admin:
+  name: admin
+  age: 18
+
+user:
+  username: dev-admin
+  password: dev-pwd
+
+msg:
+  enabled: true
+  url: 127.0.0.1
+  accessKeyId: 10001
+  accessKeySecret: afelwjfwfwef
+
+logging:
+  level:
+    com: debug
+    root: debug
+
+
+#actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+
+#Info端点暴露的数据
+info:
+  app:
+    encoding: UTF-8
+  java:
+    source: 1.8.0_31
+    target: 1.8.0_31

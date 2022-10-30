@@ -10,7 +10,7 @@ import org.springframework.core.annotation.Order;
  *
  *  可以通过3种方式调用该类:
  *      1. 参考Spring Boot 源代码中的操作, 该实现类配置在 META-INF/spring.factories文件中.
- *      2. 通过 application.properties 或者 application.yml 文件进行配置, 格式如下:
+ *      2. 通过 application.yml 或者 application.yml 文件进行配置, 格式如下:
  *          context.initializer.classes=xxx.LearnApplicationContextInitializer
  *      3. 通过SpringApplication提供的addInitializers方法进行追加配置.
  */
