@@ -62,6 +62,11 @@ Actuator组件是Spring Boot提供的一种集成组件，可以实现应用系�
 
     /**
      * 扩展 Info端点
+     *
+     * 1. 通过配置文件中添加格式以 ”info"开头的配置段，
+     *    可以定义Info端点暴露的数据
+     *
+     * 2. 自定义的 InfoContributor对象， 直接实现 InfoContributor接口的contribute()
      */
 
 }
