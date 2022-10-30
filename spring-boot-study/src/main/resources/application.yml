@@ -27,12 +27,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: *
+        include: '*'
 
-#Info¶Ëµã±©Â¶µÄÊı¾İ
+#Infoç«¯ç‚¹æš´éœ²çš„æ•°æ®
 info:
   app:
     encoding: UTF-8
   java:
     source: 1.8.0_31
-    target: 1.8.0_31
+    target: @java.version@
+    encoding: @project.build.sourceEncoding@
