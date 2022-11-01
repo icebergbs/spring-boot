@@ -76,10 +76,17 @@
             <version>2.11.0</version>
         </dependency>
 
+<!--        自定义Starter-->
         <dependency>
             <groupId>com.bingshan</groupId>
             <artifactId>spring-boot-starter-msg</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+<!--        Actuator-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
 

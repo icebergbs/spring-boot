@@ -1,6 +1,6 @@
 package com.bingshan.springboot.starter;
 
-import com.bingshan.springboot.msg.MsgService;
+import com.bingshan.msg.MsgService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

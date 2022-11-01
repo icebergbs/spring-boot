@@ -69,4 +69,10 @@ Actuator组件是Spring Boot提供的一种集成组件，可以实现应用系�
      * 2. 自定义的 InfoContributor对象， 直接实现 InfoContributor接口的contribute()
      */
 
+    /**
+     * 扩展 Health 端点
+     *
+     * HealthIndicator对象.
+     */
+
 }
