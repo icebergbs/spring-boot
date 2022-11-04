@@ -151,7 +151,7 @@ CREATE TABLE `ftp` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uniq_ftp_code` (`server_id`,`ftp_code`,`deleted`) USING BTREE,
   UNIQUE KEY `uniq_ftp_name` (`server_id`,`ftp_name`,`deleted`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COMMENT='FTP组件信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='FTP组件信息表';
 
 CREATE TABLE `ftp_param` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id',
