@@ -31,7 +31,7 @@ docker stop $project
 docker rm $project
 docker images | grep registry.cn-hangzhou.aliyuncs.com/mixlink/$project  | awk '{print $3}' | xargs docker rmi
 
-docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:${ipaas_version}
+docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:${ipaas_mirror_version}
 docker logout
 
 #start config
@@ -43,7 +43,7 @@ params="--platform.crud.db-host=${ipaas_mysql_host} \
 --spring.redis.host=${ipaas_redis_host} \
 --spring.redis.port=${ipaas_redis_port} \
 --spring.redis.password=${ipaas_redis_password} \
---linker.address=${ipaas_linker_address} "
+--linker.address=${ipaas_linker_host} "
 
 log "PARAMS=${params}"
 
@@ -53,7 +53,7 @@ docker run  --name platform-linker \
 -v /data/platform-linker:/platform-linker/logs \
 -e PARAMS="${params}" \
 --restart=always \
--d registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:${ipaas_version}
+-d registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:${ipaas_mirror_version}
 
 for b in {1..25}
 do

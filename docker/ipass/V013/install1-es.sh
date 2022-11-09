@@ -26,6 +26,7 @@ docker run -d --name=es \
 -e "discovery.type=single-node" \
 -e ES_JAVA_OPTS="-Xms512m -Xmx1024m" \
 --network linkerNetwork --ip 172.18.0.2 \
+--restart=always \
 elasticsearch:7.16.2
 
 #kibana 部署 7.16.2
@@ -36,7 +37,7 @@ docker run --name kibana \
 -p 5601:5601 \
 --network linkerNetwork \
 --ip 172.18.0.3 \
--d kibana:7.16.2 \
---restart=always
+--restart=always \
+-d kibana:7.16.2
 
 echo -e "======================= 安装完成 =======================\n" 2>&1 | tee -a ${current_dir}/install.log

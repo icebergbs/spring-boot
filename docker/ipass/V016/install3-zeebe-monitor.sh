@@ -3,7 +3,7 @@
 #docker login password
 docker_pass=$1
 
-project=platform-web
+project=zeebe-monitor
 
 current_dir=$(
    cd `dirname $0`
@@ -11,19 +11,17 @@ current_dir=$(
 )
 
 function log() {
-   message="[platform-web Log]: $1 "
+   message="[zeebe-monitor Log]: $1 "
    echo -e "${message}" 2>&1 | tee -a ${current_dir}/install.log
 }
 echo -e "======================= 开始安装 =======================" 2>&1 | tee -a ${current_dir}/install.log
-log "拷贝配置文件模板文件  -> /config/platform-web"
-mkdir -p /config/platform-web
-cp -r ./config/platform-web/* /config/platform-web/
+log "拷贝配置文件模板文件  -> /config/"
+mkdir -p /config/
+cp -r ./config/install.conf /config/install.conf
 log "设置自定义环境变量"
 set -a
-source  /config/platform-web/nginx.conf
+source  /config/install.conf
 set +a
-sed -i 's/<ipaas_platform_linker_host>/'${ipaas_platform_linker_host}'/' /config/platform-web/default.conf
-sed -i 's/<ipaas_zeebe_monitor_host>/'${ipaas_zeebe_monitor_host}'/' /config/platform-web/default.conf
 
 echo "登录Docker"
 echo $docker_pass | docker login --username gm_esupplychain --password-stdin registry.cn-hangzhou.aliyuncs.com
@@ -33,19 +31,31 @@ docker stop $project
 docker rm $project
 docker images | grep registry.cn-hangzhou.aliyuncs.com/mixlink/$project  | awk '{print $3}' | xargs docker rmi
 
-docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/platform-web:${ipaas_version}
+docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/zeebe-monitor:${ipaas_mirror_version}
+docker logout
 
-docker run --name platform-web \
--p 8082:8082 \
---network linkerNetwork --ip 172.18.0.14 \
--v /config/platform-web/default.conf:/etc/nginx/conf.d/default.conf \
+#start config
+params="--spring.datasource.url=jdbc:mysql://${ipaas_mysql_host}:${ipaas_mysql_port}/${zeebe_monitor_mysql_db}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai \
+--spring.datasource.username=${ipaas_mysql_user} \
+--spring.datasource.password=${ipaas_mysql_password} \
+--elasticsearch.url=${ipaas_es_host} \
+--zeebe.client.broker=${ipaas_zeebe_client_broker} \
+--linker.host=${ipaas_linker_host}"
+
+log "PARAMS=${params}"
+
+docker run --name zeebe-monitor \
+--network linkerNetwork --ip 172.18.0.10 \
+-p 8085:8085 \
+-e PARAMS="${params}" \
 --restart=always \
--d registry.cn-hangzhou.aliyuncs.com/mixlink/platform-web:${ipaas_version}
+-v /data/zeebe-monitor:/zeebe-monitor/logs \
+-d registry.cn-hangzhou.aliyuncs.com/mixlink/zeebe-monitor:${ipaas_mirror_version}
 
 for b in {1..25}
 do
    sleep 3
-   http_code=`curl -sILw "%{http_code}\n" http://localhost:8082 -o /dev/null`
+   http_code=`curl -sILw "%{http_code}\n" http://localhost:8085 -o /dev/null`
    if [[ $http_code == 000 ]];then
       log "服务启动中，请稍候 ..."
    elif [[ $http_code == 200 ]];then

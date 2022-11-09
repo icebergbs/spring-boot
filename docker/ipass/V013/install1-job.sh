@@ -15,6 +15,14 @@ function log() {
    echo -e "${message}" 2>&1 | tee -a ${current_dir}/install.log
 }
 echo -e "======================= 开始安装 =======================" 2>&1 | tee -a ${current_dir}/install.log
+log "拷贝配置文件模板文件  -> /config/"
+mkdir -p /config/
+cp -r ./config/install.conf /config/install.conf
+log "设置自定义环境变量"
+set -a
+source  /config/install.conf
+set +a
+
 echo "登录Docker"
 echo $docker_pass | docker login --username gm_esupplychain --password-stdin registry.cn-hangzhou.aliyuncs.com
 

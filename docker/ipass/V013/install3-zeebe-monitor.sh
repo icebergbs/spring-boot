@@ -49,6 +49,7 @@ docker run --name zeebe-monitor \
 -p 8085:8085 \
 -e PARAMS="${params}" \
 --restart=always \
+-v /data/zeebe-monitor:/zeebe-monitor/logs \
 -d registry.cn-hangzhou.aliyuncs.com/mixlink/zeebe-monitor:0.13
 
 for b in {1..25}

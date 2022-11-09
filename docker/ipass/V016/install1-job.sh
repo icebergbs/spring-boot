@@ -2,8 +2,8 @@
 
 #docker login password
 docker_pass=$1
-
-project=platform-linker
+#project name
+project=xxl-job-admin
 
 current_dir=$(
    cd `dirname $0`
@@ -11,7 +11,7 @@ current_dir=$(
 )
 
 function log() {
-   message="[platform-linker Log]: $1 "
+   message="[XXL-job Log]: $1 "
    echo -e "${message}" 2>&1 | tee -a ${current_dir}/install.log
 }
 echo -e "======================= 开始安装 =======================" 2>&1 | tee -a ${current_dir}/install.log
@@ -31,34 +31,29 @@ docker stop $project
 docker rm $project
 docker images | grep registry.cn-hangzhou.aliyuncs.com/mixlink/$project  | awk '{print $3}' | xargs docker rmi
 
-docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:0.13
+docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/xxl-job-admin:1.0
 docker logout
 
 #start config
-params="--platform.crud.db-host=${ipaas_mysql_host} \
---platform.crud.db-username=${ipaas_mysql_user} \
---platform.crud.db-password=${ipaas_mysql_password} \
---platform.crud.db-name=${platform_linker_mysql_db} \
---platform.crud.db-port=${ipaas_mysql_port} \
---spring.redis.host=${ipaas_redis_host} \
---spring.redis.port=${ipaas_redis_port} \
---spring.redis.password=${ipaas_redis_password} \
---linker.address=${ipaas_linker_address} "
+params="--spring.datasource.url=jdbc:mysql://${ipaas_mysql_host}:${ipaas_mysql_port}/\
+${xxl_job_mysql_db}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai \
+--spring.datasource.username=${ipaas_mysql_user} \
+--spring.datasource.password=${ipaas_mysql_password}"
 
 log "PARAMS=${params}"
 
-docker run  --name platform-linker \
---network linkerNetwork --ip 172.18.0.8 \
--p 7003:7003 \
--v /data/platform-linker:/platform-linker/logs \
+docker run --name $project \
+--network linkerNetwork --ip 172.18.0.12 \
+-v /data/xxl-job:/xxl-job-admin/logs \
+-p 7006:7006 \
 -e PARAMS="${params}" \
 --restart=always \
--d registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:0.13
+-d registry.cn-hangzhou.aliyuncs.com/mixlink/xxl-job-admin:1.0
 
 for b in {1..25}
 do
    sleep 3
-   http_code=`curl -sILw "%{http_code}\n" http://localhost:7003 -o /dev/null`
+   http_code=`curl -sILw "%{http_code}\n" http://localhost:7006/xxl-job-admin -o /dev/null`
    if [[ $http_code == 000 ]];then
       log "服务启动中，请稍候 ..."
    elif [[ $http_code == 200 ]];then

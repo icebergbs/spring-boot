@@ -1333,7 +1333,7 @@ INSERT INTO `sys_menu` VALUES (23, '2021-07-17 23:32:18', NULL, '2021-07-17 23:3
 INSERT INTO `sys_menu` VALUES (24, '2021-07-17 23:32:18', NULL, '2021-07-17 23:32:18', NULL, NULL, '新增', 22, 2, 'SysMenu:create', NULL, 2, 1, NULL, '', 0);
 INSERT INTO `sys_menu` VALUES (25, '2021-07-17 23:32:18', NULL, '2021-07-17 23:32:18', NULL, NULL, '删除', 22, 2, 'SysMenu:delete', NULL, 3, 1, NULL, '', 0);
 INSERT INTO `sys_menu` VALUES (26, '2021-07-17 23:32:18', NULL, '2021-07-17 23:32:18', NULL, NULL, '编辑', 22, 2, 'SysMenu:update', NULL, 4, 1, NULL, '', 0);
-INSERT INTO `sys_menu` VALUES (32, '2021-07-17 23:32:19', NULL, '2021-12-10 15:57:14', 'jiang', NULL, '租户管理', 1, 1, 'SysTenant', 'ant-design:aliyun-outlined', 0, 1, '/sys/SysTenant/index', '', 0);
+INSERT INTO `sys_menu` VALUES (32, '2021-07-17 23:32:19', NULL, '2021-12-10 15:57:14', 'jiang', NULL, '租户管理', 1, 1, 'SysTenant', 'ant-design:aliyun-outlined', 0, 1, '/sys/SysTenant/index', '', 1667888168);
 INSERT INTO `sys_menu` VALUES (33, '2021-07-17 23:32:19', NULL, '2021-07-17 23:32:19', NULL, NULL, '查询', 32, 2, 'SysTenant:retrieve', NULL, 1, 1, NULL, '', 0);
 INSERT INTO `sys_menu` VALUES (34, '2021-07-17 23:32:20', NULL, '2021-07-17 23:32:20', NULL, NULL, '新增', 32, 2, 'SysTenant:create', NULL, 2, 1, NULL, '', 0);
 INSERT INTO `sys_menu` VALUES (35, '2021-07-17 23:32:20', NULL, '2021-07-17 23:32:20', NULL, NULL, '删除', 32, 2, 'SysTenant:delete', NULL, 3, 1, NULL, '', 0);
@@ -1370,7 +1370,7 @@ INSERT INTO `sys_menu` VALUES (75, '2021-11-19 11:26:57', 'admin', '2021-11-19 1
 INSERT INTO `sys_menu` VALUES (76, '2021-11-19 11:27:25', 'admin', '2021-11-19 11:27:25', 'admin', NULL, '修改', 73, 2, 'OutboundApi:update', NULL, 3, 1, NULL, '', 0);
 INSERT INTO `sys_menu` VALUES (77, '2021-11-19 11:27:47', 'admin', '2021-11-19 11:27:47', 'admin', NULL, '删除', 73, 2, 'OutboundApi:delete', NULL, 4, 1, NULL, '', 0);
 INSERT INTO `sys_menu` VALUES (86, '2021-11-29 09:26:13', 'caozq', '2021-12-10 15:56:58', 'jiang', NULL, '字典管理', 1, 1, '', 'ant-design:bars-outlined', 7, 1, '/sys/vben/dictMg/index', '', 0);
-INSERT INTO `sys_menu` VALUES (87, '2021-11-29 13:40:55', 'caozq', '2022-06-01 09:03:47', 'admin', NULL, 'API资源', 0, 0, '', 'ant-design:bug-outlined', 3, 1, 'LAYOUT', '', 0);
+INSERT INTO `sys_menu` VALUES (87, '2021-11-29 13:40:55', 'caozq', '2022-06-01 09:03:47', 'admin', NULL, 'API资源', 0, 0, '', 'ant-design:bug-outlined', 3, 1, 'LAYOUT', '', 1667888225);
 INSERT INTO `sys_menu` VALUES (88, '2021-11-29 13:41:52', 'caozq', '2022-06-01 09:17:57', 'admin', NULL, '我的项目', 87, 1, '', 'ant-design:laptop-outlined', 1, 1, '/tenant/ApiCenter/myProject/index', '', 0);
 INSERT INTO `sys_menu` VALUES (89, '2021-11-30 10:09:02', 'admin', '2021-11-30 10:21:18', 'caozq', NULL, '查询', 86, 2, 'SysDictType:retrieve', NULL, 1, 1, 'LAYOUT', '', 0);
 INSERT INTO `sys_menu` VALUES (90, '2021-11-30 10:09:49', 'admin', '2021-11-30 10:09:49', 'admin', NULL, '新增', 86, 2, 'SysDictType:create', NULL, 2, 1, NULL, '', 0);

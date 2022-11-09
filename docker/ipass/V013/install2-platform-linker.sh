@@ -43,7 +43,7 @@ params="--platform.crud.db-host=${ipaas_mysql_host} \
 --spring.redis.host=${ipaas_redis_host} \
 --spring.redis.port=${ipaas_redis_port} \
 --spring.redis.password=${ipaas_redis_password} \
---linker.address=${ipaas_linker_address} "
+--linker.address=${ipaas_linker_host} "
 
 log "PARAMS=${params}"
 

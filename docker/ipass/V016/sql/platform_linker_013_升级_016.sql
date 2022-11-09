@@ -18,7 +18,7 @@ use `platform_linker`;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
--- ------------------------v0.15 Oracle start -------------------------------------
+-- --------------------------v0.15 Oracle start -------------------------------------
 
 -- 参数注释
 alter table active_directory_param modify label_name varchar(20) null COMMENT '字段展示中文名称';
@@ -105,10 +105,10 @@ DROP INDEX uniq_field ON object_fields;
 commit;
 create unique index uniq_field_code on object_fields(object_id,field_code,belongs_to, deleted);
 commit;
---  -------------------------------------------------------------
+-- -------------------------------------------------------------
 
 
---  ------------------------FTP-------------------------------------
+-- ------------------------FTP-------------------------------------
 
 -- FTP
 CREATE TABLE `ftp_server` (
@@ -124,7 +124,7 @@ CREATE TABLE `ftp_server` (
   `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '备注',
   `deleted` bigint(20) DEFAULT '0' COMMENT '0-未删除；时间戳-已删除',
   `created_at` datetime NOT NULL COMMENT '创建时刻',
-  `created_by` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '\n创建者',
+  `created_by` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '创建者',
   `updated_at` datetime NOT NULL COMMENT '更新时刻',
   `updated_by` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '更新者',
   PRIMARY KEY (`id`) USING BTREE,
@@ -151,7 +151,7 @@ CREATE TABLE `ftp` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uniq_ftp_code` (`server_id`,`ftp_code`,`deleted`) USING BTREE,
   UNIQUE KEY `uniq_ftp_name` (`server_id`,`ftp_name`,`deleted`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='FTP组件信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COMMENT='FTP组件信息表';
 
 CREATE TABLE `ftp_param` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id',

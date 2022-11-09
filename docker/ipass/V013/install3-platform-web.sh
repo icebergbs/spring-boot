@@ -36,7 +36,7 @@ docker images | grep registry.cn-hangzhou.aliyuncs.com/mixlink/$project  | awk '
 docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/platform-web:0.13
 
 docker run --name platform-web \
--p 8082:8082 \
+-p 80:8082 \
 --network linkerNetwork --ip 172.18.0.14 \
 -v /config/platform-web/default.conf:/etc/nginx/conf.d/default.conf \
 --restart=always \
