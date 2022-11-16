@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#docker login password
-docker_pass=$1
-
-project=platform-linker
 
 current_dir=$(
    cd `dirname $0`
@@ -23,16 +19,6 @@ set -a
 source  /config/install.conf
 set +a
 
-echo "登录Docker"
-echo $docker_pass | docker login --username gm_esupplychain --password-stdin registry.cn-hangzhou.aliyuncs.com
-
-echo "先删除镜像" 2>&1 | tee -a ${current_dir}/install.log
-docker stop $project
-docker rm $project
-docker images | grep registry.cn-hangzhou.aliyuncs.com/mixlink/$project  | awk '{print $3}' | xargs docker rmi
-
-docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:0.13
-docker logout
 
 #start config
 params="--platform.crud.db-host=${ipaas_mysql_host} \
@@ -43,17 +29,17 @@ params="--platform.crud.db-host=${ipaas_mysql_host} \
 --spring.redis.host=${ipaas_redis_host} \
 --spring.redis.port=${ipaas_redis_port} \
 --spring.redis.password=${ipaas_redis_password} \
---linker.address=${ipaas_linker_host} "
+--linker.address=${ipaas_linker_boot_host} "
 
 log "PARAMS=${params}"
 
 docker run  --name platform-linker \
---network linkerNetwork --ip 172.18.0.8 \
+--network ipass-network --ip 172.20.0.8 \
 -p 7003:7003 \
 -v /data/platform-linker:/platform-linker/logs \
 -e PARAMS="${params}" \
 --restart=always \
--d registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:0.13
+-d registry.cn-hangzhou.aliyuncs.com/mixlink/platform-linker:${ipaas_mirror_version}
 
 for b in {1..25}
 do
@@ -73,5 +59,3 @@ done
 if [[ $http_code != 200 ]];then
    log "【错误】服务在等待时间内未完全启动！"
 fi
-
-echo -e "======================= 安装完成 =======================\n" 2>&1 | tee -a ${current_dir}/install.log

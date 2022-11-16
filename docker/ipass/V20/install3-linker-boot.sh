@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#docker login password
-docker_pass=$1
-
-project=linker-boot
 
 current_dir=$(
    cd `dirname $0`
@@ -23,16 +19,7 @@ set -a
 source  /config/install.conf
 set +a
 
-echo "登录Docker"
-echo $docker_pass | docker login --username gm_esupplychain --password-stdin registry.cn-hangzhou.aliyuncs.com
-
-echo "先删除镜像" 2>&1 | tee -a ${current_dir}/install.log
-docker stop $project
-docker rm $project
-docker images | grep registry.cn-hangzhou.aliyuncs.com/mixlink/$project  | awk '{print $3}' | xargs docker rmi
-
-docker pull registry.cn-hangzhou.aliyuncs.com/mixlink/linker-boot:0.13
-docker logout
+mkdir -p /data/linker-boot/logs
 
 #start config
 params="--spring.datasource.url=jdbc:mysql://${ipaas_mysql_host}:${ipaas_mysql_port}/${linker_boot_mysql_db}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true \
@@ -41,21 +28,21 @@ params="--spring.datasource.url=jdbc:mysql://${ipaas_mysql_host}:${ipaas_mysql_p
 --spring.redis.host=${ipaas_redis_host} \
 --spring.redis.port=${ipaas_redis_port} \
 --spring.redis.password=${ipaas_redis_password} \
---xxl.job.admin.addresses=${ipaas_xxl_job_admin_addresses} "
+--xxl.job.admin.addresses=${ipaas_xxl_job_admin_host} "
 
 log "PARAMS=${params}"
 
 docker run --name linker-boot \
---network linkerNetwork --ip 172.18.0.7 \
+--network ipass-network --ip 172.20.0.7 \
 -p 7004:7004 -p 7005:7005 \
--v /data/linker-boot:/linker-boot/logs \
+-v /data/linker-boot/logs:/linker-boot/logs \
 -e PARAMS="${params}" \
 --restart=always \
--d registry.cn-hangzhou.aliyuncs.com/mixlink/linker-boot:0.13
+-d registry.cn-hangzhou.aliyuncs.com/mixlink/linker-boot:${ipaas_mirror_version}
 
-for b in {1..25}
+for b in {1..10}
 do
-   sleep 3
+   sleep 5
    http_code=`curl -sILw "%{http_code}\n" http://localhost:7004 -o /dev/null`
    if [[ $http_code == 000 ]];then
       log "服务启动中，请稍候 ..."
@@ -71,5 +58,3 @@ done
 if [[ $http_code != 200 ]];then
    log "【错误】服务在等待时间内未完全启动！"
 fi
-
-echo -e "======================= 安装完成 =======================\n" 2>&1 | tee -a ${current_dir}/install.log

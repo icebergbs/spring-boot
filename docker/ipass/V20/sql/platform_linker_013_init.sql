@@ -341,7 +341,7 @@ CREATE TABLE `inbound_api_param`  (
   `belongs_to` bigint(20) NULL DEFAULT 0 COMMENT '所属于哪个字段',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `inbound_api_id`(`inbound_api_id`, `inbound_api_param_id`) USING BTREE
+  INDEX `uniq_inbound_api_param_id`(`inbound_api_id`, `inbound_api_param_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'API编排输入参数表' ROW_FORMAT = Dynamic;
 
 
