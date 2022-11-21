@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  replicas: 1         #Pod的副本数量
+  selector:           # 目标Pod的标签选择器
+    matchLabels:
+      app: myweb
+  template:           #用于自动创建新Pod副本的模板
+    metadata:
+      labels:
+        app: myweb
+    spec:

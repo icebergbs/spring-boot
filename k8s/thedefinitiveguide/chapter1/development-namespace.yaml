@@ -1,0 +1,4 @@
+aipVersion: v1
+kind: Namespace
+metadata:
+  name: development

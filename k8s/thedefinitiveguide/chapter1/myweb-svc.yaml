@@ -11,5 +11,5 @@ spec:
     - port: 8081          #Service提供服务的端口号
       name: myweb
       nodePort: 30001
-  selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务
-    app: myweb
+  selector:               #Service对应的Pod拥有这里定义的标签, 确定了那些Pod副本(实例)对应本服务.
+    app: myweb            #通过这个标签选择器与myweb Deployment发生关联

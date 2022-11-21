@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Pod       # Pod类型的资源对象
+metadata:
+  name: myweb         #Pod名称  对象名, 全局唯一
+  labels:             #标签
+    app: myweb
+spec:              #Pod里所包含的容器组的定义则在spec部分中声明
+  containers:
+    - name: myweb
+      image: kubeguide/tomcat-app:v1
+      ports:
+        - containerPort: 8081
