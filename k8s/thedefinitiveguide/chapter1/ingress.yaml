@@ -1,0 +1,17 @@
+kind: Ingress
+metadata:
+  name: name-virtual-host-ingress
+  spec:
+    rules:
+      - host: foo.bar.com      #到虚拟域名 first.bar.com 请求的流量会被路由到Service1
+        http:
+          paths:
+            - backend:
+                serviceName: servicel
+                servicePort: 80
+      - host: bar.foo.com
+        http:
+          paths:
+            - backend:
+                serviceName: service2
+                servicePort: 80

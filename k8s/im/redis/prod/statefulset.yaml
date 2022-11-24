@@ -1,0 +1,192 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: '2020-02-17T01:49:48Z'
+  generation: 2
+  labels:
+    app: redis-ha
+    chart: redis-ha-4.0.4
+    heritage: Tiller
+    redis-ha-default: replica
+    release: redis-ha-default
+  name: redis-ha-default-server
+  namespace: kube-ops
+  resourceVersion: '1129061472'
+  uid: c78b2e7a-5127-11ea-b10b-028e2ab3b0db
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: redis-ha
+      release: redis-ha-default
+  serviceName: redis-ha-default
+  template:
+    metadata:
+      annotations:
+        checksum/init-config: 12b84c8db8878682595d56cd783489847ba24cfa925d7aba231914f4084c1254
+      labels:
+        app: redis-ha
+        redis-ha-default: replica
+        release: redis-ha-default
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: redis-ha
+                    redis-ha-default: replica
+                    release: redis-ha-default
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: redis-ha
+                  redis-ha-default: replica
+                  release: redis-ha-default
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - args:
+            - /data/conf/redis.conf
+          command:
+            - redis-server
+          env:
+            - name: AUTH
+              valueFrom:
+                secretKeyRef:
+                  key: auth
+                  name: redis-ha-default
+          image: 'redis:5.0.6-alpine'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 6379
+            timeoutSeconds: 1
+          name: redis
+          ports:
+            - containerPort: 6379
+              name: redis
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data
+              name: data
+        - args:
+            - /data/conf/sentinel.conf
+          command:
+            - redis-sentinel
+          env:
+            - name: AUTH
+              valueFrom:
+                secretKeyRef:
+                  key: auth
+                  name: redis-ha-default
+          image: 'redis:5.0.6-alpine'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 26379
+            timeoutSeconds: 1
+          name: sentinel
+          ports:
+            - containerPort: 26379
+              name: sentinel
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data
+              name: data
+      dnsPolicy: ClusterFirst
+      initContainers:
+        - args:
+            - /readonly-config/init.sh
+          command:
+            - sh
+          env:
+            - name: SENTINEL_ID_0
+              value: 170b9ef17c1f6d6d04cd32217ff153e2e5422d80
+            - name: SENTINEL_ID_1
+              value: cc47207a1e50c54ec3b7bc9d9ddb001b8d7e035c
+            - name: SENTINEL_ID_2
+              value: c9fa6eb9694bb2a1d63d00b8e13a70744d81950a
+            - name: AUTH
+              valueFrom:
+                secretKeyRef:
+                  key: auth
+                  name: redis-ha-default
+          image: 'redis:5.0.6-alpine'
+          imagePullPolicy: IfNotPresent
+          name: config-init
+          resources:
+            limits:
+              cpu: 800m
+              memory: 1536Mi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /readonly-config
+              name: config
+              readOnly: true
+            - mountPath: /data
+              name: data
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      serviceAccount: redis-ha-default
+      serviceAccountName: redis-ha-default
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: redis-ha-default-configmap
+          name: config
+        - emptyDir: {}
+          name: data
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: alicloud-nas
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+status:
+  collisionCount: 0
+  currentReplicas: 3
+  currentRevision: redis-ha-default-server-d8f959dd7
+  observedGeneration: 2
+  readyReplicas: 3
+  replicas: 3
+  updateRevision: redis-ha-default-server-d8f959dd7
+  updatedReplicas: 3
