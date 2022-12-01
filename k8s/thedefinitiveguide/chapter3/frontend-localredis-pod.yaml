@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis-php
 spec:
-  containers: #定义容器
+  containers: #定义容器 两个容器
     - name: frontend
       image: kubeguide/guestbook-php-frontend
       ports:
