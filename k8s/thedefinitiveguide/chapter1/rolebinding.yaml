@@ -1,0 +1,13 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-pods
+  namespace: default
+subjects:          #subjects （目标主体）来表示要授权的对象，这是因为我们可以授权三类目标账号
+  - kind: User     # ： Group(用户组） User(某个具体用户） Service Account (Pod应用所使用的账号）
+    name: Caden
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io

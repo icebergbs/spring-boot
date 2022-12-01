@@ -1,0 +1,9 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default   # 命名空间default中定义一个Role对象
+  name: pod-reader
+rules:
+  - apiGroups: [""]  # 空字符串“” 表明使用 core API group
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]   #具有对Pod资源的get、watch、list 权限

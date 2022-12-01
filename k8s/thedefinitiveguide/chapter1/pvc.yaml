@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim   #PVC, 表示应用希望申请的PV规格， 重要属性 accessModes storageClassName  resources
+metadata:
+  name: claim1
+spec:
+  accessModes:               #存储访问模式
+    - ReadWriteOnce
+  storageClassName: standard   #用那种StorageClass来实现动态创建
+  resources:                  #存储的具体规格
+    requests:
+      storage: 30Gi

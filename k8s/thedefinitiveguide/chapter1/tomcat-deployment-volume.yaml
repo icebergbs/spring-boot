@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: frontend
+    matchExpressions:
+      - {key: tier, operator: In, values: [frontend]}
+  template:
+    metadata:
+      labels:
+        app: app-demo
+        tier: frontend
+    spec:
+      volumes:               # Volumes  声明一个Volume
+        - name: datavol      # Volumes
+          emptyDir: {}       # Volumes
+        - name: "persistent-storage"  # hostPath  定义了一个hostPath类型的Volume
+          hostPath:                   # hostPath
+            path: "/data"             # hostPath
+        - name: tomcatedata           # PVC
+          persistentVolumeClaim:      # PVC  引用PVC
+            claimName: claim1         # PVC
+      containers:
+        - name: tomcat-demo
+          image: tomcat
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          volumeMounts:                 # Volumes 在容器里引用该Volume并将其挂载（Mount)到容器里目录下
+            - mountPath: /mydata-data   # Volumes
+              name: datavol             # Volumes
+            - name: tomcatedata      # PVC
+              mountPath:  "/data"    # PVC

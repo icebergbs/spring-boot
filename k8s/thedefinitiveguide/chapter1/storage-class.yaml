@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass   #有几个关键属性： provisioner  parameters reclaimPolicy
+metadata:
+  name: standard      # StorageClass 的名称会在PVC(PV Claim)中出现； 参考pvc.yaml
+  provisioner: kubernetes.io/aws-ebs  #代表创建PV的第三方存储插件
+  parameters:                         # 时创建PV时的必要参数
+    type: gp2
+  reclaimPolicy: Retain               # PV回收策略，包括删除或者保留
+  allowVolumeExpansion: true
+  mountOptions:
+    - debug
+  volumeBindingMode: Immediate
