@@ -2,8 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-appconfigfiles
-data:
-   key-serverxml: |
+data:                   #ConfigMap  展示了将两个配置文件server.xml 和logging.properties定义为ConfigMap
+   key-serverxml: |     #ConfigMap   key为配置文件的别名，value则是配置文件的全部文本内容
      <?xml varsion='1.0' encoding='urf-8'>
      <Server port="8005" shutdown="SHUTODOWN">
      ....

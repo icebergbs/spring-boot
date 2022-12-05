@@ -3,11 +3,11 @@ kind: Pod
 metadata:
   name: cm-test-pod
 spec:
-  containers: #定义容器
+  containers:
     - name: cm-test
       image: busybox
       command: [ "/bin/sh", "-c", "env" ]
-      envFrom:
+      envFrom:             #envFrom  ConfigMap中定义的key=value 自动生成环境变量
         - configMapRef:
           name: cm-appvars  #根据 cm-appvars 中的 key=value 自动生成环境变量
   restartPolicy: Never
