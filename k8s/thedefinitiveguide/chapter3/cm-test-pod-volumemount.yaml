@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Pod
 metadata:
-  name: cm-test-pod
+  name: cm-test-p
 spec:
   containers: #定义容器
     - name: cm-test-app

@@ -15,3 +15,4 @@ spec:
     - name: serverxml                       #定义Volume的名称
       configMap:
         name: cm-appconfigfiles            #使用ConfigMap "cm..."
+                                           #不指定items, 则使用volumeMount方式在容器内的目录下为每个item都生成一个文件名为key的文件

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: dapi-envars-resourcefieldref
+spec:
+  containers:
+    - name: test-container
+      image: busybox
+      imagePullPolicy: Never
+      command: [ "sh", "-c"]
+      args:
+        - while true; do
+          echo -en '\n';
+          printenv MY_CPU_REQUEST MY_CUP_LIMIT;
+          printenv MY_MEM_REQUEST MY_MEM_LIMIT;
+          sleep 10;
+        done;
+      resources:
+        limits:
+          cpu: "250m"
+          memory: "64Mi"
+        requests:
+          cpu: "125m"
+          memory: "32Mi"
+      env:
+        - name: MY_CPU_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName: test-container
+              resource: requests.cpu  #  容器的CPU请求值
+        - name: MY_CUP_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: test-container
+              resource: limits.cpu  # 容器的CPU限制值
+        - name: MY_MEM_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName: test-container
+              resource: requests.memory  #  容器的内存请求值
+        - name: MY_MEM_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: test-container
+              resource: limits.memory  # 容器的内存限制值
+      restartPolicy: Never
