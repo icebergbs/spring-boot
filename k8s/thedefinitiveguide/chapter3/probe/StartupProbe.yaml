@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-healthcheck
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      startupProbe:    # LivenessProbe健康检查
+        httpGet:
+          path: /healthz
+          port: livenness-port
+        failureThreshold: 30
+        periodSeconds: 10

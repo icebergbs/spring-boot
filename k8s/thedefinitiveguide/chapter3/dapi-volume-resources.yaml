@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: kubernetes-downwardapi-volume-example-2
+spec:
+  containers:
+    - name: client-container
+      image: busybox
+      command: [ "sh", "-c"]
+      args:
+        - while true; do
+            echo -en '\n';
+            if [[ -e /etc/podinfo/cpu_limit ]]; then
+            echo -en '\n\n'; cat /etc/podinfo/cpu_limit; fi;
+            if [[ -e /etc/podinfo/cpu_request ]]; then
+            echo -en '\n\n'; cat /etc/podinfo/cpu_request; fi;
+            if [[ -e /etc/podinfo/mem_limit ]]; then
+            echo -en '\n\n'; cat /etc/podinfo/mem_limit; fi;
+            if [[ -e /etc/podinfo/mem_request ]]; then
+            echo -en '\n\n'; cat /etc/podinfo/mem_request; fi;
+            sleep 5;
+          done;
+      volumeMounts:
+        - name: podinfo
+            mountPath: /etc/podinfo
+      resources:
+        limits:
+          cpu: "250m"
+          memory: "64Mi"
+        requests:
+          cpu: "125m"
+          memory: "32Mi"
+    volumes:
+      - name: podinfo
+          downwardAPI:
+            items:
+              - path: "cpu_limit"
+                resourceFieldRef:
+                  containerName: client-container
+                  resource: limits.cpu    # 容器的CPU限制值
+                  divisor: 1m
+              - path: "cpu_request"
+                resourceFieldRef:
+                  containerName: client-container
+                  resource: requests.cpu  # 容器的CPU请求值
+                  divisor: 1m
+              - path: "mem_limit"
+                resourceFieldRef:
+                  containerName: client-container
+                  resource: limits.memory  # 容器的内存限制值
+                  divisor: 1m
+              - path: "mem_request"
+                resourceFieldRef:
+                  containerName: client-container
+                  resource: requests.memory   # 容器的内存请求值
+                  divisor: 1m
+
