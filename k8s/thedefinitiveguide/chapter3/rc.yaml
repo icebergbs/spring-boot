@@ -1,0 +1,12 @@
+selector:
+  matchLabels:
+    tier: frontend
+  matchExpressions:
+    - {key: tier, operator: In, values: [frontend]}
+
+
+selector1:
+  matchLabels:
+    version: v2
+  matchExpressions:
+    - {key: version, operator: In, values: [v1,v2]}
