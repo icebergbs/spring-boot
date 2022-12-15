@@ -1,0 +1,12 @@
+apiVersion: scheduling.k8s.io/v1betal
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      imagePullPolicy: IfNotPresent
+    priorityClassName: high-priority
