@@ -1,10 +1,9 @@
-
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: elasticsearch
-  namespace: chenzhou
+  namespace: kube-ops
 spec:
   replicas: 1
   selector:
@@ -26,10 +25,8 @@ spec:
             value: "true"
           - name: path.data
             value: /usr/share/elasticsearch/data
-          # 自定义集群名
           - name: cluster.name
             value: es-cluster
-          # 定义节点名，使用metadata.name名称
           - name: node.name
             valueFrom:
               fieldRef:
@@ -82,7 +79,7 @@ spec:
               name: es-conf
               subPath: elasticsearch.yml
       imagePullSecrets:
-        - name: myregistrykey
+        - name: mix-repo
       volumes:
         - hostPath:
             path: /home/software/elasticsearch/k8s-es/plugins
@@ -105,9 +102,6 @@ spec:
           requests:
             storage: 20Gi
         storageClassName: alicloud-disk-ssd
-
-
-
 
 ---
 apiVersion: v1
