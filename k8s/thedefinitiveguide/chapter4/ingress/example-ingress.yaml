@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  ingressClassName: external-lb
+  rules:
+    - host: mywebsite.com
+      http:
+        paths:
+          - path: /demo
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: webapp
+                port:
+                  number: 8080
