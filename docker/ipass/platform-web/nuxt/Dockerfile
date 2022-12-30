@@ -21,6 +21,7 @@ RUN npm install
 #nginx
 COPY .ci/dev/nginx.conf  /usr/local/nginx/conf/nginx.conf
 ADD .ci/dev/start.sh /platform-web/dist/start.sh
+# 解决 windows到linux 文件换行 ^M问题
 RUN dos2unix /platform-web/dist/start.sh
 RUN chmod +x /platform-web/dist/start.sh
 
