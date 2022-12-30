@@ -23,6 +23,7 @@
     <modules>
 <!--        <module>spring-boot-starter-msg</module>-->
         <module>sql-generate-util</module>
+        <module>script-work</module>
     </modules>
 
     <dependencies>
